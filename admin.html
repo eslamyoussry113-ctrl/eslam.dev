@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المشاريع | Eslam.dev</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="globals.css">
+</head>
+<body class="bg-[var(--color-forest-depths)] text-[var(--color-pure-white)] font-sans antialiased min-h-screen p-6 md:p-12">
+
+    <div class="max-w-2xl mx-auto bg-[var(--color-moss-shadow)] border border-[var(--color-pale-fern)]/20 p-8 rounded-3xl shadow-2xl backdrop-blur-md">
+        <div class="flex justify-between items-center mb-6 border-b border-[var(--color-pale-fern)]/20 pb-4">
+            <h1 class="text-xl font-bold text-[var(--color-electric-sprout)]">لوحة تحكم إضافة المشاريع</h1>
+            <a href="index.html" class="text-xs text-[var(--color-pale-fern)] hover:text-[var(--color-pure-white)] bg-[var(--color-forest-depths)] px-3 py-1.5 rounded-lg border border-[var(--color-pale-fern)]/20">العودة للموقع ↗</a>
+        </div>
+
+        <form id="project-form" class="space-y-4">
+            <div>
+                <label class="block text-sm text-[var(--color-pale-fern)] mb-1">اسم المشروع</label>
+                <input type="text" id="title" required class="w-full px-4 py-2.5 bg-[var(--color-forest-depths)] border border-[var(--color-pale-fern)]/30 rounded-xl text-sm text-[var(--color-pure-white)] focus:border-[var(--color-electric-sprout)] outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm text-[var(--color-pale-fern)] mb-1">وصف المشروع</label>
+                <textarea id="description" rows="3" required class="w-full px-4 py-2.5 bg-[var(--color-forest-depths)] border border-[var(--color-pale-fern)]/30 rounded-xl text-sm text-[var(--color-pure-white)] focus:border-[var(--color-electric-sprout)] outline-none"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm text-[var(--color-pale-fern)] mb-1">التقنيات المستخدمة (مثال: Python, Flask, Tailwind)</label>
+                <input type="text" id="tech" required class="w-full px-4 py-2.5 bg-[var(--color-forest-depths)] border border-[var(--color-pale-fern)]/30 rounded-xl text-sm text-[var(--color-pure-white)] focus:border-[var(--color-electric-sprout)] outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm text-[var(--color-pale-fern)] mb-1">رابط المشروع (GitHub أو معاينة حية)</label>
+                <input type="url" id="link" placeholder="https://..." class="w-full px-4 py-2.5 bg-[var(--color-forest-depths)] border border-[var(--color-pale-fern)]/30 rounded-xl text-sm text-[var(--color-pure-white)] focus:border-[var(--color-electric-sprout)] outline-none" dir="ltr">
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-[var(--color-electric-sprout)] text-[var(--color-forest-depths)] font-bold rounded-xl text-sm hover:opacity-95 transition-all shadow-lg shadow-[var(--color-electric-sprout)]/10 mt-2">
+                إضافة المشروع للموقع 🚀
+            </button>
+        </form>
+
+        <div class="mt-8 pt-6 border-t border-[var(--color-pale-fern)]/20">
+            <h2 class="text-sm font-bold text-[var(--color-pale-fern)] mb-3">المشاريع المضافة حالياً:</h2>
+            <div id="admin-projects-list" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('project-form');
+        const listContainer = document.getElementById('admin-projects-list');
+
+        function loadProjects() {
+            // التحقق من وجود المفتاح أول مرة فقط، وإذا تم حذفه تماماً لا يعيد إضافته تلقائياً
+            if (localStorage.getItem('eslam_projects') === null) {
+                const defaultProjects = [
+                    {
+                        title: "GradSwap",
+                        description: "An academic repository web platform deployed online and packaged into an Android application via Apache Cordova.",
+                        tech: "Python, Flask, Cordova",
+                        link: "#"
+                    },
+                    {
+                        title: "Ashaq Al-Lugha",
+                        description: "Full-stack educational platform featuring student portals, quiz modules, and integrated pytesseract OCR for exam scanning.",
+                        tech: "Python, OCR, SQLAlchemy",
+                        link: "#"
+                    },
+                    {
+                        title: "Deploy POS",
+                        description: "Desktop cashier management application with offline capabilities, local inventory control, and direct invoice printing.",
+                        tech: "Python, Desktop App, SQLite",
+                        link: "#"
+                    }
+                ];
+                localStorage.setItem('eslam_projects', JSON.stringify(defaultProjects));
+            }
+
+            const projects = JSON.parse(localStorage.getItem('eslam_projects')) || [];
+            listContainer.innerHTML = '';
+
+            if (projects.length === 0) {
+                listContainer.innerHTML = '<p class="text-xs text-[var(--color-pale-fern)] text-center py-2">لا توجد مشاريع مضافة حالياً.</p>';
+                return;
+            }
+
+            projects.forEach((p, index) => {
+                const item = document.createElement('div');
+                item.className = 'flex justify-between items-center p-3 bg-[var(--color-forest-depths)]/50 rounded-xl border border-[var(--color-pale-fern)]/10 text-xs';
+                item.innerHTML = `
+                    <div class="text-right">
+                        <span class="font-bold text-[var(--color-pure-white)] block">${p.title}</span>
+                        <span class="text-[var(--color-pale-fern)] block mt-0.5">${p.tech}</span>
+                    </div>
+                    <button onclick="deleteProject(${index})" class="text-red-400 hover:text-red-300 px-2 py-1 font-medium">حذف 🗑️</button>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newProject = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                tech: document.getElementById('tech').value,
+                link: document.getElementById('link').value || '#'
+            };
+
+            const projects = JSON.parse(localStorage.getItem('eslam_projects')) || [];
+            projects.push(newProject);
+            localStorage.setItem('eslam_projects', JSON.stringify(projects));
+
+            form.reset();
+            loadProjects();
+            alert('تم إضافة المشروع بنجاح وسيظهر في الصفحة الرئيسية!');
+        });
+
+        window.deleteProject = function(index) {
+            const projects = JSON.parse(localStorage.getItem('eslag_projects') || '[]'); // للتأكد من اسم المفتاح الصحيح
+            const currentProjects = JSON.parse(localStorage.getItem('eslam_projects')) || [];
+            currentProjects.splice(index, 1);
+            localStorage.setItem('eslam_projects', JSON.stringify(currentProjects));
+            loadProjects();
+        }
+
+        loadProjects();
+    </script>
+</body>
+</html>

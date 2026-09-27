@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineer - Eslam Youssry | Software & AI Systems Developer</title>
+    <!-- وصف مختصر للموقع بيظهر تحت العنوان في جوجل -->
+    <meta name="description" content="إسلام يسري (Eslam Youssry)، مبرمج ومطور برمجيات متخصص في تطوير الويب والتطبيقات وأنظمة الذكاء الاصطناعي." />    <meta name="keywords" content="إسلام يسري, Eslam Youssry, مطور برمجيات, Web Developer, بورتفوليو, برمجة" />
+    <meta name="author" content="Eslam Youssry" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="globals.css">
+    <style>
+        /* Matrix Code Rain Background */
+        #code-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            opacity: 0.12;
+            pointer-events: none;
+            font-family: monospace;
+        }
+        .code-line {
+            position: absolute;
+            white-space: nowrap;
+            color: var(--color-electric-sprout);
+            font-size: 13px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100px); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Perfect Soft Mouse Spotlight Glow */
+        #mouse-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(104, 239, 63, 0.18) 0%, rgba(104, 239, 63, 0.04) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            filter: blur(25px);
+        }
+
+        /* Light Mode Custom Overrides */
+        html.light-mode {
+            --color-forest-depths: #f4f7f4;
+            --color-pure-white: #111816;
+            --color-moss-shadow: #ffffff;
+            --color-pale-fern: #4b5563;
+            --color-electric-sprout: #22c55e;
+            --color-sprout-wash: #dcfce7;
+        }
+
+        @keyframes pulse-scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .animate-pulse-scale {
+            animation: pulse-scale 2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-[var(--color-forest-depths)] text-[var(--color-pure-white)] font-sans antialiased min-h-screen flex flex-col justify-between p-6 md:p-12 overflow-x-hidden relative transition-colors duration-500">
+
+    <!-- Code Rain Background -->
+    <div id="code-bg"></div>
+
+    <!-- Mouse Follow Spotlight Glow Effect -->
+    <div id="mouse-glow"></div>
+
+    <!-- Welcome Loader Screen -->
+    <div id="loader" class="fixed inset-0 z-50 bg-[var(--color-forest-depths)] flex items-center justify-center transition-opacity duration-700">
+        <div class="text-center">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-2">Engineer <span class="text-[var(--color-electric-sprout)]">Eslam Youssry</span></h2>
+            <p class="text-sm text-[var(--color-pale-fern)] animate-pulse">Initializing workspace...</p>
+        </div>
+    </div>
+
+    <!-- Header / Nav -->
+    <header class="max-w-5xl mx-auto w-full flex justify-between items-center py-4 px-6 bg-[var(--color-moss-shadow)] border border-[var(--color-pale-fern)]/20 rounded-[var(--radius-3xl-2)] backdrop-blur-md relative z-10 opacity-0 translate-y-[-20px]" id="nav-bar">
+        <div class="text-lg md:text-xl font-bold tracking-tight flex items-center gap-2">
+            <span>Engineer</span>
+            <span id="animated-brand" class="text-[var(--color-electric-sprout)] inline-block min-w-[150px]">Eslam Youssry</span>
+        </div>
+
+        <nav class="hidden md:flex gap-6 text-sm text-[var(--color-pale-fern)] items-center">
+            <a href="#about" class="hover:text-[var(--color-electric-sprout)] transition-colors">About</a>
+            <a href="#projects" class="hover:text-[var(--color-electric-sprout)] transition-colors">Projects</a>
+            <a href="#skills" class="hover:text-[var(--color-electric-sprout)] transition-colors">Skills</a>
+            <a href="#contact" class="hover:text-[var(--color-electric-sprout)] transition-colors">Contact</a>
+
+            <!-- Theme Toggle Button -->
+            <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--color-forest-depths)] border border-[var(--color-pale-fern)]/30 text-[var(--color-electric-sprout)] hover:scale-110 transition-transform shadow-md" title="Toggle Dark/Light Mode">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </nav>
+
+        <div class="flex items-center gap-3">
+            <button id="theme-toggle-mobile" class="md:hidden p-2 rounded-xl bg-[var(--color-forest-depths)] border border-[var(--color-pale-fern)]/30 text-[var(--color-electric-sprout)] shadow-md">
+                <span id="theme-icon-mobile">🌙</span>
+            </button>
+            <div class="px-4 py-1.5 text-xs bg-[var(--color-sprout-wash)] text-[var(--color-deep-verdant)] font-medium rounded-[var(--radius-full)] border border-[var(--color-pale-fern)]/10 shadow-sm flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[var(--color-electric-sprout)] animate-pulse"></span>
+                <span>At your service & fastest delivery</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="max-w-4xl mx-auto text-center my-auto py-16 relative z-10 flex flex-col items-center">
+
+        <!-- Profile Image Container -->
+        <div class="mb-4 relative opacity-0 hero-item cursor-pointer group" id="profile-card-trigger" title="Click to view brief info">
+            <div class="w-32 h-32 md:w-36 md:h-36 rounded-full p-1 bg-gradient-to-tr from-[var(--color-electric-sprout)] to-[var(--color-moss-shadow)] shadow-xl shadow-[var(--color-electric-sprout)]/10 transition-transform duration-300 group-hover:scale-105">
+                <img src="profile.jpg" alt="Eslam Youssry" class="w-full h-full object-cover rounded-full bg-[var(--color-moss-shadow)]" onerror="this.src='https://via.placeholder.com/150/141d18/68ef3f?text=EY'">
+            </div>
+            <span class="absolute bottom-1 right-2 w-4 h-4 bg-[var(--color-electric-sprout)] border-2 border-[var(--color-forest-depths)] rounded-full animate-pulse" title="Online"></span>
+        </div>
+        <p class="text-xs text-[var(--color-pale-fern)] mb-6 opacity-0 hero-item tracking-wide">👆 Click profile image to view brief bio</p>
+
+        <!-- Hidden Minimalist Info Card -->
+        <div id="bio-card" class="hidden w-full max-w-sm mb-6 p-5 bg-[var(--color-moss-shadow)]/90 border border-[var(--color-electric-sprout)]/30 rounded-2xl backdrop-blur-md shadow-2xl text-left transition-all duration-500 opacity-0 transform -translate-y-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-sm font-bold text-[var(--color-pure-white)] tracking-wide">Eslam Youssry</h3>
+                <button id="close-bio" class="text-[var(--color-pale-fern)] hover:text-[var(--color-pure-white)] text-xs px-2 py-0.5 rounded bg-[var(--color-forest-depths)]/50">✕</button>
+            </div>
+
+            <div class="space-y-2.5 text-xs text-[var(--color-pale-fern)]">
+                <div class="flex items-center gap-2">
+                    <span class="text-[var(--color-electric-sprout)]">⚡</span>
+                    <span>Software & AI Systems Developer</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[var(--color-electric-sprout)]">📍</span>
+                    <span>Egypt</span>
+                </div>
+                <p class="text-[var(--color-pure-white)]/80 bg-[var(--color-forest-depths)]/40 p-2.5 rounded-xl border border-[var(--color-pale-fern)]/10 leading-relaxed text-left">
+                    Passionate about software engineering, building intelligent web applications, and creating innovative developer tools with hands-on expertise.
+                </p>
+            </div>
+        </div>
+
+        <div class="inline-block mb-4 px-4 py-1.5 bg-[var(--color-moss-shadow)] border border-[var(--color-pale-fern)]/30 rounded-[var(--radius-full)] text-sm text-[var(--color-pale-fern)] opacity-0 hero-item">
+            Welcome, I'm Eslam Youssry
+        </div>
+
+        <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 leading-relaxed opacity-0 hero-item">
+            <span id="animated-title-part1">Software Engineer</span> & <br>
+            <span id="animated-title-part2" class="text-[var(--color-electric-sprout)]">AI Systems Developer</span>
+        </h1>
+
+        <p class="text-lg text-[var(--color-pale-fern)] max-w-2xl mx-auto mb-8 leading-relaxed opacity-0 hero-item">
+            Specialized in building scalable web applications, automated Python utilities, and modern digital platforms.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-4 opacity-0 hero-item">
+            <a href="#projects" class="px-6 py-3 bg-[var(--color-electric-sprout)] text-[var(--color-forest-depths)] font-semibold rounded-[var(--radius-xl)] hover:opacity-95 transition-all shadow-lg shadow-[var(--color-electric-sprout)]/10">
+                Explore Projects
+            </a>
+            <a href="#contact" class="px-6 py-3 bg-[var(--color-moss-shadow)] border border-[var(--color-pale-fern)]/30 text-[var(--color-pure-white)] font-semibold rounded-[var(--radius-xl)] hover:border-[var(--color-electric-sprout)] transition-all">
+                Get in Touch
+            </a>
+        </div>
+    </main>
+
+    <!-- About Section -->
+    <section id="about" class="max-w-4xl mx-auto w-full py-20 border-t border-[var(--color-pale-fern)]/10 text-center relative z-10">
+        <h2 class="text-2xl font-bold text-[var(--color-electric-sprout)] mb-4">About Experience & Focus</h2>
+        <p class="text-[var(--color-pale-fern)] max-w-xl mx-auto text-sm leading-relaxed">
+            Dedicated to delivering clean, advanced software solutions and professional user interfaces that meet client requirements with peak efficiency.
+        </p>
+    </section>
+
+    <!-- Dynamic Projects Section -->
+    <section id="projects" class="max-w-4xl mx-auto w-full py-20 border-t border-[var(--color-pale-fern)]/10 text-center relative z-10">
+        <h2 class="text-2xl font-bold text-[var(--color-electric-sprout)] mb-4">Featured Projects</h2>
+        <p class="text-[var(--color-pale-fern)] max-w-xl mx-auto text-sm leading-relaxed mb-10">
+            A collection of applications and systems engineered using cutting-edge technologies like Python, Flask, and Next.js.
+        </p>
+        <!-- Projects Grid Container -->
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+            <!-- Dynamic items loaded here -->
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="max-w-4xl mx-auto w-full py-20 border-t border-[var(--color-pale-fern)]/10 text-center relative z-10">
+        <h2 class="text-2xl font-bold text-[var(--color-electric-sprout)] mb-4">Technical Skills</h2>
+        <p class="text-[var(--color-pale-fern)] max-w-xl mx-auto text-sm leading-relaxed">
+            Full-stack development, database architecture, artificial intelligence integration, and script automation.
+        </p>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="max-w-4xl mx-auto w-full py-20 border-t border-[var(--color-pale-fern)]/10 text-center relative z-10">
+        <h2 class="text-3xl font-bold text-[var(--color-electric-sprout)] mb-4 animate-pulse-scale">Contact Me</h2>
+        <p class="text-[var(--color-pale-fern)] max-w-xl mx-auto text-sm leading-relaxed mb-8">
+            Available for new project collaborations and technical inquiries. Reach out directly via email or phone:
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="mailto:eslamyoussry113@gmail.com" class="flex items-center gap-3 px-6 py-3 bg-[var(--color-moss-shadow)] border border-[var(--color-pale-fern)]/20 hover:border-[var(--color-electric-sprout)] rounded-2xl text-sm transition-all group">
+                <span class="text-[var(--color-electric-sprout)] text-lg">✉️</span>
+                <span class="text-[var(--color-pure-white)] font-medium" dir="ltr">eslamyoussry113@gmail.com</span>
+            </a>
+            <a href="tel:+201225079532" class="flex items-center gap-3 px-6 py-3 bg-[var(--color-moss-shadow)] border border-[var(--color-pale-fern)]/20 hover:border-[var(--color-electric-sprout)] rounded-2xl text-sm transition-all group">
+                <span class="text-[var(--color-electric-sprout)] text-lg">📞</span>
+                <span class="text-[var(--color-pure-white)] font-medium" dir="ltr">+20 1225079532</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="max-w-5xl mx-auto w-full text-center py-6 text-sm text-[var(--color-pale-fern)] border-t border-[var(--color-pale-fern)]/20 relative z-10 opacity-0" id="footer-bar">
+        <p>© 2026 Eslam Youssry — All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle Logic
+        const htmlRoot = document.getElementById('html-root');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeIconMobile = document.getElementById('theme-icon-mobile');
+
+        const savedTheme = localStorage.getItem('eslam_theme');
+        if (savedTheme === 'light') {
+            htmlRoot.classList.add('light-mode');
+            themeIcon.textContent = '☀️';
+            themeIconMobile.textContent = '☀️';
+        }
+
+        function toggleTheme() {
+            htmlRoot.classList.toggle('light-mode');
+            const isLight = htmlRoot.classList.contains('light-mode');
+            const newIcon = isLight ? '☀️' : '🌙';
+            themeIcon.textContent = newIcon;
+            themeIconMobile.textContent = newIcon;
+            localStorage.setItem('eslam_theme', isLight ? 'light' : 'dark');
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleMobile.addEventListener('click', toggleTheme);
+
+        // Load Dynamic Projects into Index with condition (=== null) to prevent re-adding deleted ones
+        document.addEventListener("DOMContentLoaded", () => {
+            const projectsGrid = document.getElementById('projects-grid');
+            if (!projectsGrid) return;
+
+            if (localStorage.getItem('eslam_projects') === null) {
+                const defaultProjects = [
+                    {
+                        title: "GradSwap",
+                        description: "An academic repository web platform deployed online and packaged into an Android application via Apache Cordova.",
+                        tech: "Python, Flask, Cordova",
+                        link: "#"
+                    },
+                    {
+                        title: "Ashaq Al-Lugha",
+                        description: "Full-stack educational platform featuring student portals, quiz modules, and integrated pytesseract OCR for exam scanning.",
+                        tech: "Python, OCR, SQLAlchemy",
+                        link: "#"
+                    },
+                    {
+                        title: "Deploy POS",
+                        description: "Desktop cashier management application with offline capabilities, local inventory control, and direct invoice printing.",
+                        tech: "Python, Desktop App, SQLite",
+                        link: "#"
+                    }
+                ];
+                localStorage.setItem('eslam_projects', JSON.stringify(defaultProjects));
+            }
+
+            const projects = JSON.parse(localStorage.getItem('eslam_projects')) || [];
+            projectsGrid.innerHTML = '';
+
+            if (projects.length === 0) {
+                projectsGrid.innerHTML = '<p class="text-xs text-[var(--color-pale-fern)] text-center col-span-full py-8 bg-[var(--color-moss-shadow)]/40 rounded-2xl border border-[var(--color-pale-fern)]/10">No projects added currently.</p>';
+                return;
+            }
+
+            projects.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-[var(--color-moss-shadow)] border border-[var(--color-pale-fern)]/20 p-6 rounded-2xl shadow-xl flex flex-col justify-between hover:border-[var(--color-electric-sprout)]/50 transition-all";
+                card.innerHTML = `
+                    <div>
+                        <h3 class="text-lg font-bold text-[var(--color-pure-white)] mb-2">${p.title}</h3>
+                        <p class="text-xs text-[var(--color-pale-fern)] mb-4 leading-relaxed">${p.description}</p>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            ${p.tech.split(',').map(t => `<span class="px-2.5 py-1 bg-[var(--color-forest-depths)] text-[var(--color-electric-sprout)] text-[11px] rounded-lg border border-[var(--color-pale-fern)]/20">${t.trim()}</span>`).join('')}
+                        </div>
+                        <a href="${p.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-electric-sprout)] hover:underline">
+                            View Project ↗
+                        </a>
+                    </div>
+                `;
+                projectsGrid.appendChild(card);
+            });
+        });
+
+        // Matrix Code Rain Background
+        const codeSnippets = [
+            "def create_app():", "app = Flask(__name__)", "@app.route('/')",
+            "class SmartLibrary:", "def __init__(self, title):", "self.title = title",
+            "import pandas as pd", "import pytesseract", "db.sqlalchemy.init_app(app)",
+            "const router = NextRouter();", "tailwind.config.js", "git commit -m 'feat: initial release'"
+        ];
+
+        const codeBg = document.getElementById('code-bg');
+        for (let i = 0; i < 15; i++) {
+            const span = document.createElement('div');
+            span.className = 'code-line';
+            span.textContent = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+            span.style.left = `${Math.random() * 90}%`;
+            span.style.animationDuration = `${Math.random() * 8 + 5}s`;
+            span.style.animationDelay = `${Math.random() * 5}s`;
+            codeBg.appendChild(span);
+        }
+
+        // Smooth Mouse Spotlight
+        const glow = document.getElementById('mouse-glow');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, currentX = mouseX, currentY = mouseY;
+        window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        function animateGlow() {
+            currentX += (mouseX - currentX) * 0.12;
+            currentY += (mouseY - currentY) * 0.12;
+            glow.style.left = `${currentX}px`;
+            glow.style.top = `${currentY}px`;
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        // Brand & Title Rotators
+        const brandElement = document.getElementById('animated-brand');
+        const brandWords = ["Eslam Youssry", "Software Engineer", "AI Developer"];
+        let brandWordIdx = 0, brandCharIdx = 0, brandIsDeleting = false;
+        function typeBrandEffect() {
+            const currentWord = brandWords[brandWordIdx];
+            if (brandIsDeleting) {
+                brandElement.textContent = currentWord.substring(0, brandCharIdx - 1);
+                brandCharIdx--;
+            } else {
+                brandElement.textContent = currentWord.substring(0, brandCharIdx + 1);
+                brandCharIdx++;
+            }
+            let speed = brandIsDeleting ? 60 : 100;
+            if (!brandIsDeleting && brandCharIdx === currentWord.length) { speed = 2000; brandIsDeleting = true; }
+            else if (brandIsDeleting && brandCharIdx === 0) { brandIsDeleting = false; brandWordIdx = (brandWordIdx + 1) % brandWords.length; speed = 500; }
+            setTimeout(typeBrandEffect, speed);
+        }
+        setTimeout(typeBrandEffect, 1000);
+
+        // Profile Bio Toggle
+        const trigger = document.getElementById('profile-card-trigger');
+        const bioCard = document.getElementById('bio-card');
+        const closeBio = document.getElementById('close-bio');
+        let isBioOpen = false;
+
+        trigger.addEventListener('click', () => {
+            if (!isBioOpen) {
+                bioCard.classList.remove('hidden');
+                gsap.to(bioCard, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
+                isBioOpen = true;
+            }
+        });
+        closeBio.addEventListener('click', (e) => {
+            e.stopPropagation();
+            gsap.to(bioCard, { opacity: 0, y: -10, duration: 0.3, onComplete: () => { bioCard.classList.add('hidden'); isBioOpen = false; } });
+        });
+
+        // Intro Animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const tl = gsap.timeline();
+            tl.to("#loader", { opacity: 0, duration: 0.6, onComplete: () => document.getElementById('loader').style.display = 'none' })
+              .to("#nav-bar", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" })
+              .to(".hero-item", { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "power2.out" }, "-=0.4")
+              .to("#footer-bar", { opacity: 1, duration: 0.8 }, "-=0.2");
+        });
+    </script>
+</body>
+</html>
