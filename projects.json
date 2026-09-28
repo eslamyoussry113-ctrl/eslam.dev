@@ -1,0 +1,20 @@
+[
+  {
+    "title": "GradSwap",
+    "description": "An academic repository web platform deployed online and packaged into an Android application via Apache Cordova.",
+    "tags": ["Python", "Flask", "Cordova"],
+    "link": "#"
+  },
+  {
+    "title": "Ashaq Al-Lugha",
+    "description": "Full-stack educational platform featuring student portals, quiz modules, and integrated pytesseract OCR for exam scanning.",
+    "tags": ["Python", "OCR", "SQLAlchemy"],
+    "link": "#"
+  },
+  {
+    "title": "Deploy POS",
+    "description": "Desktop cashier management application with offline capabilities, local inventory control, and direct invoice printing.",
+    "tags": ["Python", "Desktop App", "SQLite"],
+    "link": "#"
+  }
+]
