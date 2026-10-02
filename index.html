@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Engineer - Eslam Youssry | Software & AI Systems Developer</title>
-    <!-- وصف مختصر للموقع بيظهر تحت العنوان في جوجل -->
-    <meta name="description" content="إسلام يسري (Eslam Youssry)، مبرمج ومطور برمجيات متخصص في تطوير الويب والتطبيقات وأنظمة الذكاء الاصطناعي." />    <meta name="keywords" content="إسلام يسري, Eslam Youssry, مطور برمجيات, Web Developer, بورتفوليو, برمجة" />
+    <meta name="description" content="إسلام يسري (Eslam Youssry)، مبرمج ومطور برمجيات متخصص في تطوير الويب والتطبيقات وأنظمة الذكاء الاصطناعي." />
+    <meta name="keywords" content="إسلام يسري, Eslam Youssry, مطور برمجيات, Web Developer, بورتفوليو, برمجة" />
     <meta name="author" content="Eslam Youssry" />
     <meta name="google-site-verification" content="wqAOZUj5XCVsnHs3zFHFtr66HMmH_tOVGKbiSuLzQj0" />
     <!-- Tailwind CSS -->
@@ -263,7 +263,7 @@
         themeToggleBtn.addEventListener('click', toggleTheme);
         themeToggleMobile.addEventListener('click', toggleTheme);
 
-        // Load Dynamic Projects into Index with condition (=== null) to prevent re-adding deleted ones
+        // Load Dynamic Projects into Index
         document.addEventListener("DOMContentLoaded", () => {
             const projectsGrid = document.getElementById('projects-grid');
             if (!projectsGrid) return;
@@ -399,37 +399,6 @@
               .to(".hero-item", { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "power2.out" }, "-=0.4")
               .to("#footer-bar", { opacity: 1, duration: 0.8 }, "-=0.2");
         });
-        <script>
-  // كود جلب المشاريع من ملف projects.json المركزي
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("projects-container");
-    if (!container) return;
-
-    fetch('projects.json')
-      .then(response => response.json())
-      .then(projects => {
-        if (projects.length === 0) {
-          container.innerHTML = "<p class='text-center text-gray-400'>No projects added currently.</p>";
-          return;
-        }
-
-        container.innerHTML = "";
-        projects.forEach(project => {
-          const tagsHtml = project.tags.map(tag => `<span class="px-3 py-1 bg-gray-800 text-green-400 rounded-full text-sm">${tag}</span>`).join('');
-
-          const projectCard = `
-            <div class="p-6 bg-gray-900 border border-green-500/30 rounded-xl shadow-lg">
-              <h3 class="text-xl font-bold text-white mb-2">${project.title}</h3>
-              <p class="text-gray-300 mb-4">${project.description}</p>
-              <div class="flex flex-wrap gap-2 mb-4">${tagsHtml}</div>
-              <a href="${project.link}" class="text-green-400 hover:underline flex items-center gap-1">View Project ↗</a>
-            </div>
-          `;
-          container.innerHTML += projectCard;
-        });
-      })
-      .catch(error => console.error('Error loading projects:', error));
-  });
     </script>
 </body>
 </html>
